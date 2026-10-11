@@ -893,7 +893,7 @@
                     <td class="p-3 font-mono font-semibold text-slate-700">${r.sn2}</td>
                     <td class="p-3">${getStatusBadge(r.status)}</td>
                     <td class="p-3 font-bold text-brand-darkBlue">${r.ets}</td>
-                    <td class="p-3 text-[11px] font-mono text-slate-500">${r.timestamp}</td>
+                    <td class="p-3 text-[11px] font-mono text-slate-500">${r.timestamp ? r.timestamp.split(',')[0].trim() : ''}</td>
                     <td class="p-3 text-center space-x-1 space-x-reverse">
                         <button onclick="editRecord('${r.firebaseKey}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1 rounded-lg text-[11px] font-bold shadow-sm">تعديل</button>
                         <button onclick="deleteRecord('${r.firebaseKey}')" class="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded-lg text-[11px] font-bold shadow-sm">حذف</button>
@@ -939,7 +939,7 @@
                 "الرقم التسلسلي للجهاز 2": r.sn2,
                 "حالة التركيب المشتركة": r.status,
                 "المقاول (ETS)": r.ets,
-                "تاريخ ووقت التسجيل": r.timestamp,
+                "تاريخ التسجيل": r.timestamp,
                 "الملاحظات": r.notes
             }));
 
