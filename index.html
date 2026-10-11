@@ -969,7 +969,7 @@
                     <td style="border: 1px solid #ddd; padding: 6px; font-family: monospace;">${r.sn2}</td>
                     <td style="border: 1px solid #ddd; padding: 6px;">${r.status}</td>
                     <td style="border: 1px solid #ddd; padding: 6px;">${r.ets}</td>
-                    <td style="border: 1px solid #ddd; padding: 6px; font-family: monospace;">${r.timestamp}</td>
+                    <td style="border: 1px solid #ddd; padding: 6px; font-family: monospace;">${r.timestamp ? r.timestamp.split(',')[0].trim() : ''}</td>
                 </tr>
             `).join('');
 
