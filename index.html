@@ -736,7 +736,7 @@
             }
 
             const entry = {
-                timestamp: editingKey !== null ? registrations.find(r => r.firebaseKey === editingKey).timestamp : new Date().toLocaleString('ar-DZ'),
+                timestamp: editingKey !== null ? registrations.find(r => r.firebaseKey === editingKey).timestamp : new Date().toLocaleDateString('ar-DZ'),
                 ets: document.getElementById('reg-ets').value || 'BENSOULA DJILLALI',
                 receiver: document.getElementById('reg-receiver').value,
                 reference: document.getElementById('reg-reference').value,
