@@ -488,7 +488,6 @@
         let registrations = [];
         let editingKey = null;
 
-        // Display current date only in header stamp
         setInterval(() => {
             const now = new Date();
             const formatted = now.toLocaleDateString('ar-DZ');
@@ -762,7 +761,7 @@
                 });
             } else {
                 db.ref('registrations').push(entry).then(() => {
-                    alert('تم حفظ وتسجيل البيانات سحابياً بنجاح (ستظهر على هاتفك فوراً)!');
+                    alert('تم حفظ وتسجيل البيانات سحابياً بنجاح!');
                 });
             }
 
@@ -810,6 +809,7 @@
             document.getElementById('btn-save-submit').innerHTML = `<i class="fa-solid fa-floppy-disk"></i><span>حفظ سحابياً وتسجيل البيانات</span>`;
         }
 
+        // Corrected Duplicate Finder Logic
         function checkDuplicatesAndAlerts() {
             const refCounts = {};
             const nameCounts = {};
@@ -821,7 +821,7 @@
                 if (r.reference) refCounts[r.reference] = (refCounts[r.reference] || 0) + 1;
                 if (r.fullname) nameCounts[r.fullname] = (nameCounts[r.fullname] || 0) + 1;
                 if (r.sn1) sn1Counts[r.sn1] = (sn1Counts[r.sn1] || 0) + 1;
-                if (r.sn2) sn2Counts[r.sn2] = (r.sn2>0 ? r.sn2 : (r.sn2 || 0)) + 1; // Safeguard
+                if (r.sn2) sn2Counts[r.sn2] = (sn2Counts[r.sn2] || 0) + 1;
             });
 
             registrations.forEach((r) => {
