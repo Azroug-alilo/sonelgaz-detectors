@@ -52,8 +52,8 @@
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col bg-pattern relative">
 
-    <!-- TOAST NOTIFICATION CONTAINER (تم تعديله ليظهر بوضوح في أعلى منتصف الشاشة لكل الأجهزة) -->
-    <div id="toast-container" class="fixed top-4 inset-x-0 z-50 flex flex-col items-center justify-center pointer-events-none px-4"></div>
+    <!-- TOAST NOTIFICATION CONTAINER (تثبيت الحاوية في أعلى منتصف الشاشة فوق كل العناصر بنجاح) -->
+    <div id="toast-container" class="fixed top-3 inset-x-0 z-[9999] flex flex-col items-center justify-center pointer-events-none px-4"></div>
 
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
@@ -583,8 +583,8 @@
             const bgClass = type === 'success' ? 'bg-emerald-600' : (type === 'error' ? 'bg-red-600' : 'bg-brand-blue');
             const iconClass = type === 'success' ? 'fa-circle-check' : (type === 'error' ? 'fa-triangle-exclamation' : 'fa-circle-info');
 
-            // تحسين تصميم وحجم الـ Toast ليناسب الشاشات الصغيرة والكبيرة
-            toast.className = `pointer-events-auto ${bgClass} text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-bold transition-all duration-300 transform scale-95 opacity-0 w-full max-w-sm border border-white/20`;
+            // تعديل تصميم وإظهار التنبيه بوضوح في أعلى الشاشة في الهواتف
+            toast.className = `pointer-events-auto ${bgClass} text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-bold transition-all duration-300 transform scale-95 opacity-0 w-full max-w-sm border border-white/20 mb-2`;
             toast.innerHTML = `<i class="fa-solid ${iconClass} text-base sm:text-lg flex-shrink-0"></i><span class="flex-grow">${message}</span>`;
 
             container.appendChild(toast);
