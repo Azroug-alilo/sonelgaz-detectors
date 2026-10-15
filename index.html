@@ -47,19 +47,13 @@
         .bg-pattern { background-image: radial-gradient(#00539B 0.75px, transparent 0.75px), radial-gradient(#F37021 0.75px, #F8FAFC 0.75px); background-size: 30px 30px; background-position: 0 0, 15px 15px; }
         .modal-backdrop { transition: opacity 0.3s ease-in-out; }
         .modal-content { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
-        
-        /* تحسين التمرير للجداول على الهواتف والأجهزة اللوحية */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     </style>
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col bg-pattern relative">
 
-    <!-- TOAST NOTIFICATION CONTAINER -->
-    <div id="toast-container" class="fixed top-4 left-4 right-4 sm:right-auto sm:left-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    <!-- TOAST NOTIFICATION CONTAINER (تم تعديله ليظهر بوضوح في أعلى منتصف الشاشة لكل الأجهزة) -->
+    <div id="toast-container" class="fixed top-4 inset-x-0 z-50 flex flex-col items-center justify-center pointer-events-none px-4"></div>
 
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
@@ -107,7 +101,6 @@
                             <p class="text-xs text-slate-300 font-medium">تبع صوالحك غير بشويا</p>
                         </div>
                     </div>
-                    <!-- زر خروج للهواتف يظهر في الأعلى -->
                     <button onclick="handleLogout()" class="md:hidden bg-red-500/20 text-red-300 px-3 py-1.5 rounded-lg border border-red-500/30 font-bold text-xs">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
@@ -590,17 +583,20 @@
             const bgClass = type === 'success' ? 'bg-emerald-600' : (type === 'error' ? 'bg-red-600' : 'bg-brand-blue');
             const iconClass = type === 'success' ? 'fa-circle-check' : (type === 'error' ? 'fa-triangle-exclamation' : 'fa-circle-info');
 
-            toast.className = `pointer-events-auto ${bgClass} text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-xs font-bold transition-all duration-300 transform translate-y-[-10px] opacity-0`;
-            toast.innerHTML = `<i class="fa-solid ${iconClass} text-base"></i><span>${message}</span>`;
+            // تحسين تصميم وحجم الـ Toast ليناسب الشاشات الصغيرة والكبيرة
+            toast.className = `pointer-events-auto ${bgClass} text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-bold transition-all duration-300 transform scale-95 opacity-0 w-full max-w-sm border border-white/20`;
+            toast.innerHTML = `<i class="fa-solid ${iconClass} text-base sm:text-lg flex-shrink-0"></i><span class="flex-grow">${message}</span>`;
 
             container.appendChild(toast);
 
             setTimeout(() => {
-                toast.classList.remove('translate-y-[-10px]', 'opacity-0');
+                toast.classList.remove('scale-95', 'opacity-0');
+                toast.classList.add('scale-100', 'opacity-100');
             }, 10);
 
             setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-[-10px]');
+                toast.classList.remove('scale-100', 'opacity-100');
+                toast.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
             }, 3500);
         }
