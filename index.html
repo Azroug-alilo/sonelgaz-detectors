@@ -4,7 +4,7 @@
     <link rel="icon" type="image/png" href="ali-Ets.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> تسجيل كواشف غاز أحادي أكسيد الكربون - سونلغاز</title>
+    <title>منظومة تسجيل كواشف غاز أحادي أكسيد الكربون - سونلغاز</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -40,23 +40,30 @@
         }
     </script>
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #F8FAFC; }
+        body { font-family: 'Cairo', sans-serif; background-color: #F8FAFC; overflow-x: hidden; }
         .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.8); }
         .glass-login { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 25px 50px -12px rgba(0, 83, 155, 0.25); }
         .tab-btn.active { background-color: #00539B; color: white; border-bottom: 3px solid #F37021; }
         .bg-pattern { background-image: radial-gradient(#00539B 0.75px, transparent 0.75px), radial-gradient(#F37021 0.75px, #F8FAFC 0.75px); background-size: 30px 30px; background-position: 0 0, 15px 15px; }
         .modal-backdrop { transition: opacity 0.3s ease-in-out; }
         .modal-content { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+        
+        /* تحسين التمرير للجداول على الهواتف والأجهزة اللوحية */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col bg-pattern relative">
 
     <!-- TOAST NOTIFICATION CONTAINER -->
-    <div id="toast-container" class="fixed top-5 left-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    <div id="toast-container" class="fixed top-4 left-4 right-4 sm:right-auto sm:left-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- LOGIN SCREEN -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md">
-        <div class="glass-login w-full max-w-md p-8 rounded-3xl shadow-2xl border-t-4 border-brand-orange space-y-6 relative overflow-hidden">
+        <div class="glass-login w-full max-w-md p-6 sm:p-8 rounded-3xl shadow-2xl border-t-4 border-brand-orange space-y-6 relative overflow-hidden">
             <div class="text-center space-y-2 relative">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-brand-darkBlue to-brand-blue text-brand-orange rounded-2xl shadow-lg border border-white/20 text-3xl mb-1">
                     <i class="fa-solid fa-bolt"></i>
@@ -86,35 +93,41 @@
         
         <!-- Header -->
         <header class="bg-gradient-to-r from-brand-darkBlue via-brand-blue to-slate-900 text-white shadow-xl border-b-4 border-brand-orange">
-            <div class="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="bg-white p-2 rounded-xl shadow-md border border-slate-100 flex items-center justify-center w-12 h-12">
-                        <i class="fa-solid font-bold text-2xl text-brand-orange fa-bolt"></i>
+            <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white p-2 rounded-xl shadow-md border border-slate-100 flex items-center justify-center w-12 h-12">
+                            <i class="fa-solid font-bold text-2xl text-brand-orange fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-black tracking-wide flex items-center gap-2">
+                                <span>SONELGAZ</span>
+                                <span class="text-brand-orange text-xs bg-orange-500/20 px-2 py-0.5 rounded border border-orange-500/30">سحابي متزامن</span>
+                            </h1>
+                            <p class="text-xs text-slate-300 font-medium">تبع صوالحك غير بشويا</p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 class="text-xl font-black tracking-wide flex items-center gap-2">
-                            <span>SONELGAZ</span>
-                            <span class="text-brand-orange text-xs bg-orange-500/20 px-2 py-0.5 rounded border border-orange-500/30">سحابي متزامن</span>
-                        </h1>
-                        <p class="text-xs text-slate-300 font-medium">تبع صوالحك غير بشويا</p>
-                    </div>
+                    <!-- زر خروج للهواتف يظهر في الأعلى -->
+                    <button onclick="handleLogout()" class="md:hidden bg-red-500/20 text-red-300 px-3 py-1.5 rounded-lg border border-red-500/30 font-bold text-xs">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
                 </div>
 
                 <!-- Stats Header & Remaining Customers Indicator -->
-                <div class="flex flex-wrap items-center gap-2 text-xs">
-                    <div class="bg-blue-500/20 px-3 py-1.5 rounded-lg border border-blue-500/30 flex items-center gap-2">
+                <div class="flex flex-wrap items-center justify-center gap-2 text-xs w-full md:w-auto">
+                    <div class="bg-blue-500/25 px-3 py-1.5 rounded-lg border border-blue-500/30 flex items-center gap-2">
                         <i class="fa-solid fa-hourglass-half text-amber-300"></i>
-                        <span>المتبقي للإنجاز: <strong id="stat-remaining" class="text-amber-300 text-sm">0 من أصل 0</strong></span>
+                        <span>المتبقي: <strong id="stat-remaining" class="text-amber-300 text-sm">0 من أصل 0</strong></span>
                     </div>
-                    <div class="bg-emerald-500/20 px-3 py-1.5 rounded-lg border border-emerald-500/30 flex items-center gap-2">
+                    <div class="bg-emerald-500/25 px-3 py-1.5 rounded-lg border border-emerald-500/30 flex items-center gap-2">
                         <i class="fa-solid fa-check-circle text-emerald-400"></i>
                         <span>المركب: <strong id="stat-installed" class="text-emerald-300 text-sm">0</strong></span>
                     </div>
-                    <div class="bg-amber-500/20 px-3 py-1.5 rounded-lg border border-amber-500/30 flex items-center gap-2">
+                    <div class="bg-amber-500/25 px-3 py-1.5 rounded-lg border border-amber-500/30 flex items-center gap-2">
                         <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
                         <span>المكررين: <strong id="stat-duplicates" class="text-amber-300 text-sm">0</strong></span>
                     </div>
-                    <button onclick="handleLogout()" title="تسجيل الخروج" class="bg-red-500/20 hover:bg-red-500/40 text-red-300 px-3 py-1.5 rounded-lg border border-red-500/30 font-bold">
+                    <button onclick="handleLogout()" title="تسجيل الخروج" class="hidden md:flex bg-red-500/20 hover:bg-red-500/40 text-red-300 px-3 py-1.5 rounded-lg border border-red-500/30 font-bold items-center gap-1">
                         <i class="fa-solid fa-right-from-bracket"></i> خروج
                     </button>
                 </div>
@@ -122,172 +135,171 @@
         </header>
 
         <!-- Current File Information Banner -->
-        <div id="active-file-banner" class="bg-slate-800 text-white py-2.5 px-4 text-xs font-bold border-b border-slate-700 flex justify-between items-center">
-            <div class="flex items-center gap-2">
+        <div id="active-file-banner" class="bg-slate-800 text-white py-2.5 px-4 text-xs font-bold border-b border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-2 text-center sm:text-right">
                 <i class="fa-solid fa-file-contract text-brand-orange text-sm"></i>
                 <span>الملف المفتوح حالياً: <strong id="active-file-name" class="text-amber-300 font-mono text-sm">لم يتم اختيار أي ملف</strong></span>
             </div>
             <div class="flex items-center gap-3">
                 <span id="active-file-stats" class="text-slate-300">الزبائن: <strong class="text-white">0</strong></span>
                 <button onclick="confirmCloseCurrentFile()" class="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-xmark"></i> إغلاق الملف الحالي
+                    <i class="fa-solid fa-xmark"></i> إغلاق الملف
                 </button>
             </div>
         </div>
 
         <!-- Navigation Tabs -->
         <nav class="bg-white shadow-md border-b border-slate-200 sticky top-0 z-40">
-            <div class="container mx-auto px-4 flex overflow-x-auto">
-                <button onclick="switchTab('registration')" id="tab-registration" class="tab-btn active px-6 py-3.5 font-bold text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-file-pen text-lg"></i>
+            <div class="container mx-auto px-2 sm:px-4 flex overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('registration')" id="tab-registration" class="tab-btn active px-4 sm:px-6 py-3.5 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-file-pen text-base sm:text-lg"></i>
                     <span>تسجيل جديد</span>
                 </button>
-                <button onclick="switchTab('import')" id="tab-import" class="tab-btn px-6 py-3.5 font-bold text-sm flex items-center gap-2 text-slate-600 hover:text-brand-blue">
-                    <i class="fa-solid fa-file-import text-lg"></i>
-                    <span>استيراد قائمة الزبائن</span>
+                <button onclick="switchTab('import')" id="tab-import" class="tab-btn px-4 sm:px-6 py-3.5 font-bold text-xs sm:text-sm flex items-center gap-2 text-slate-600 hover:text-brand-blue whitespace-nowrap">
+                    <i class="fa-solid fa-file-import text-base sm:text-lg"></i>
+                    <span>استيراد قائمة</span>
                 </button>
-                <button onclick="switchTab('files')" id="tab-files" class="tab-btn px-6 py-3.5 font-bold text-sm flex items-center gap-2 text-slate-600 hover:text-brand-blue relative">
-                    <i class="fa-solid fa-folder-tree text-lg"></i>
-                    <span>أرشيف الملفات</span>
+                <button onclick="switchTab('files')" id="tab-files" class="tab-btn px-4 sm:px-6 py-3.5 font-bold text-xs sm:text-sm flex items-center gap-2 text-slate-600 hover:text-brand-blue relative whitespace-nowrap">
+                    <i class="fa-solid fa-folder-tree text-base sm:text-lg"></i>
+                    <span>الأرشيف</span>
                     <span id="badge-files-count" class="bg-brand-blue text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">0</span>
                 </button>
-                <button onclick="switchTab('duplicates')" id="tab-duplicates" class="tab-btn px-6 py-3.5 font-bold text-sm flex items-center gap-2 text-slate-600 hover:text-brand-blue relative">
-                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
-                    <span>العناصر المكررة</span>
+                <button onclick="switchTab('duplicates')" id="tab-duplicates" class="tab-btn px-4 sm:px-6 py-3.5 font-bold text-xs sm:text-sm flex items-center gap-2 text-slate-600 hover:text-brand-blue relative whitespace-nowrap">
+                    <i class="fa-solid fa-triangle-exclamation text-base sm:text-lg"></i>
+                    <span>المكررين</span>
                     <span id="badge-duplicates" class="hidden bg-amber-500 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">0</span>
                 </button>
-                <button onclick="switchTab('records')" id="tab-records" class="tab-btn px-6 py-3.5 font-bold text-sm flex items-center gap-2 text-slate-600 hover:text-brand-blue">
-                    <i class="fa-solid fa-table-list text-lg"></i>
+                <button onclick="switchTab('records')" id="tab-records" class="tab-btn px-4 sm:px-6 py-3.5 font-bold text-xs sm:text-sm flex items-center gap-2 text-slate-600 hover:text-brand-blue whitespace-nowrap">
+                    <i class="fa-solid fa-table-list text-base sm:text-lg"></i>
                     <span>السجل الكامل</span>
                 </button>
             </div>
         </nav>
 
         <!-- Main Content -->
-        <main class="container mx-auto px-4 py-6 flex-grow">
+        <main class="container mx-auto px-2 sm:px-4 py-4 sm:py-6 flex-grow">
 
             <!-- TAB 1: Registration Form -->
             <section id="sec-registration" class="space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
                     <!-- Search List -->
                     <div class="lg:col-span-4 space-y-4">
-                        <div class="glass-card p-5 rounded-2xl shadow-sm border border-slate-200">
-                            <h2 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+                        <div class="glass-card p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+                            <h2 class="font-bold text-slate-800 text-sm sm:text-base mb-3 flex items-center gap-2">
                                 <i class="fa-solid fa-magnifying-glass text-brand-orange"></i>
                                 1. اختيار الزبون من القائمة
                             </h2>
                             <div class="relative mb-3">
-                                <input type="text" id="cust-search" oninput="filterCustomerList()" placeholder="ابحث بالاسم، اللقب، أو المرجع..." class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-xl p-3 outline-none focus:ring-2 focus:ring-brand-blue">
+                                <input type="text" id="cust-search" oninput="filterCustomerList()" placeholder="ابحث بالاسم، اللقب، أو المرجع..." class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm rounded-xl p-3 outline-none focus:ring-2 focus:ring-brand-blue">
                             </div>
-                            <div id="customer-list-box" class="max-h-[420px] overflow-y-auto space-y-2 pr-1"></div>
+                            <div id="customer-list-box" class="max-h-[350px] lg:max-h-[420px] overflow-y-auto space-y-2 pr-1"></div>
                         </div>
                     </div>
 
                     <!-- Main Form -->
                     <div class="lg:col-span-8">
-                        <form id="form-registration" onsubmit="saveRegistration(event)" class="glass-card p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                        <form id="form-registration" onsubmit="saveRegistration(event)" class="glass-card p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4 sm:space-y-6">
                             
-                            <div class="flex justify-between items-center border-b border-slate-200 pb-4">
-                                <h2 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-4 gap-2">
+                                <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
                                     <i class="fa-solid fa-shield-halved text-brand-blue"></i>
                                     2. تسجيل جهازي الكاشف والمعلومات
                                 </h2>
-                                <span id="auto-timestamp" class="text-xs bg-slate-100 text-slate-700 px-5 py-2 rounded-full font-mono font-extrabold border border-slate-300 shadow-inner min-w-[130px] text-center">--/--/----</span>
+                                <span id="auto-timestamp" class="text-xs bg-slate-100 text-slate-700 px-4 py-1.5 rounded-full font-mono font-extrabold border border-slate-300 shadow-inner text-center w-full sm:w-auto">--/--/----</span>
                             </div>
 
                             <!-- ETS & Contractor -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> Installateur / ETS <span class="text-red-500">*</span></label>
-                                    <input type="text" id="reg-ets" value="Ets Bendahmen touati" required class="w-full bg-slate-50 border border-slate-300 font-bold text-sm rounded-xl p-2.5 outline-none">
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">اسم المقاول (Installateur / ETS) <span class="text-red-500">*</span></label>
+                                    <input type="text" id="reg-ets" value="Ets BENSOULA DJILLALI" required class="w-full bg-slate-50 border border-slate-300 font-bold text-xs sm:text-sm rounded-xl p-2.5 outline-none">
                                 </div>
                                 <div>
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> Date pose </label>
-                                    <input type="text" id="reg-date-display" readonly class="w-full bg-slate-100 border border-slate-300 font-mono text-slate-800 font-black text-sm rounded-xl p-2.5 px-5 outline-none tracking-wide text-center min-w-[140px]">
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">تاريخ التركيب والحفظ (Date pose)</label>
+                                    <input type="text" id="reg-date-display" readonly class="w-full bg-slate-100 border border-slate-300 font-mono text-slate-800 font-black text-xs sm:text-sm rounded-xl p-2.5 outline-none tracking-wide text-center">
                                 </div>
                             </div>
 
                             <!-- Customer Data & Smart Reference -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
                                 <div>
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> Référence <span class="text-red-500">*</span></label>
-                                    <input type="text" id="reg-reference" oninput="checkReferenceInput(this.value)" required placeholder="أدخل المرجع" class="w-full bg-white border border-slate-300 font-bold text-brand-blue text-sm rounded-lg p-2.5 outline-none">
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">المرجع (Référence) <span class="text-red-500">*</span></label>
+                                    <input type="text" id="reg-reference" oninput="checkReferenceInput(this.value)" required placeholder="أدخل المرجع" class="w-full bg-white border border-slate-300 font-bold text-brand-blue text-xs sm:text-sm rounded-lg p-2.5 outline-none">
                                 </div>
                                 <div>
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> Nom & Prénom <span class="text-red-500">*</span></label>
-                                    <input type="text" id="reg-fullname" oninput="handleCustomerNameChange(this.value)" required placeholder="اسم واللقب" class="w-full bg-white border border-slate-300 font-bold text-slate-800 text-sm rounded-lg p-2.5 outline-none">
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">الاسم واللقب للزبون (Nom & Prénom) <span class="text-red-500">*</span></label>
+                                    <input type="text" id="reg-fullname" oninput="handleCustomerNameChange(this.value)" required placeholder="اسم واللقب" class="w-full bg-white border border-slate-300 font-bold text-slate-800 text-xs sm:text-sm rounded-lg p-2.5 outline-none">
                                 </div>
-                                <div class="md:col-span-2">
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> Adresse </label>
-                                    <input type="text" id="reg-location" placeholder="العنوان الكامل" class="w-full bg-white border border-slate-300 text-slate-700 text-sm rounded-lg p-2.5 outline-none">
+                                <div class="sm:col-span-2">
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">الموقع / العنوان (Adresse)</label>
+                                    <input type="text" id="reg-location" placeholder="العنوان الكامل" class="w-full bg-white border border-slate-300 text-slate-700 text-xs sm:text-sm rounded-lg p-2.5 outline-none">
                                 </div>
                             </div>
 
                             <!-- Representative / Receiver Section (Qualité représentant) -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-orange-50/40 p-4 rounded-xl border border-orange-100">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-orange-50/40 p-4 rounded-xl border border-orange-100">
                                 <div>
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> Qualité représentant <span class="text-red-500">*</span></label>
-                                    <select id="reg-qualite" onchange="handleQualiteChange()" required class="w-full bg-white border border-slate-300 font-bold text-slate-800 text-sm rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-brand-orange">
-                                        <option value="L'abonné(e)">L'abonné(e) </option>
-                                        <option value="L'épouse">L'épouse </option>
-                                        <option value="Le mari">Le mari </option>
-                                        <option value="Le fils">Le fils </option>
-                                        <option value="La fille">La fille </option>
-                                        <option value="Les proches">Les proches </option>
-                                        <option value="Le voisin">Le voisin </option>
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">صفة المستلم (Qualité représentant) <span class="text-red-500">*</span></label>
+                                    <select id="reg-qualite" onchange="handleQualiteChange()" required class="w-full bg-white border border-slate-300 font-bold text-slate-800 text-xs sm:text-sm rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-brand-orange">
+                                        <option value="L'abonné(e)">L'abonné(e) (الزبون نفسه)</option>
+                                        <option value="L'épouse">L'épouse (الزوجة)</option>
+                                        <option value="Le mari">Le mari (الزوج)</option>
+                                        <option value="Le fils">Le fils (الابن)</option>
+                                        <option value="La fille">La fille (الابنة)</option>
+                                        <option value="Les proches">Les proches (الأقارب)</option>
+                                        <option value="Le voisin">Le voisin (الجار)</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> Nom représentant <span class="text-red-500">*</span></label>
-                                    <input type="text" id="reg-receiver" required readonly placeholder="اسم المستلم" class="w-full bg-slate-100 border border-slate-300 text-slate-800 font-bold text-sm rounded-lg p-2.5 outline-none">
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">اسم الشخص المستلم (Nom représentant) <span class="text-red-500">*</span></label>
+                                    <input type="text" id="reg-receiver" required readonly placeholder="اسم المستلم" class="w-full bg-slate-100 border border-slate-300 text-slate-800 font-bold text-xs sm:text-sm rounded-lg p-2.5 outline-none">
                                 </div>
                             </div>
 
                             <!-- ID Type (Type pièce) & Number Validation -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> Type pièce <span class="text-red-500">*</span></label>
-                                    <select id="reg-id-type" onchange="handleIdTypeChange()" required class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm font-bold rounded-xl p-2.5 outline-none focus:ring-2 focus:ring-brand-blue">
-                                        <option value="Carte nationale d'identité">Carte nationale d'identité </option>
-                                        <option value="Permis de conduire">Permis de conduire </option>
-                                        <option value="Passeport">Passeport </option>
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">نوع وثيقة اثبات الهوية (Type pièce) <span class="text-red-500">*</span></label>
+                                    <select id="reg-id-type" onchange="handleIdTypeChange()" required class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-bold rounded-xl p-2.5 outline-none focus:ring-2 focus:ring-brand-blue">
+                                        <option value="Carte nationale d'identité">Carte nationale d'identité (18 رقماً إلزامياً)</option>
+                                        <option value="Permis de conduire">Permis de conduire (رخصة السياقة)</option>
+                                        <option value="Passeport">Passeport (جواز السفر)</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="text-xs font-bold text-slate-700 block mb-1"> N° pièce <span class="text-red-500">*</span></label>
-                                    <input type="text" id="reg-id-number" oninput="validateIdNumber()" required placeholder="أدخل رقم الهوية" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm font-mono rounded-lg p-2.5 outline-none">
+                                    <label class="text-xs font-bold text-slate-700 block mb-1">رقم الوثيقة (N° pièce) <span class="text-red-500">*</span></label>
+                                    <input type="text" id="reg-id-number" oninput="validateIdNumber()" required placeholder="أدخل رقم الهوية" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-mono rounded-lg p-2.5 outline-none">
                                     <span id="id-error-msg" class="text-[11px] text-red-500 font-bold mt-1 hidden"></span>
                                 </div>
                             </div>
 
                             <!-- Serial Numbers (N° série 1 & N° série 2) -->
                             <div class="border-t border-slate-200 pt-4 space-y-4">
-                                <h3 class="text-sm font-bold text-brand-darkBlue flex items-center gap-2">
+                                <h3 class="text-xs sm:text-sm font-bold text-brand-darkBlue flex items-center gap-2">
                                     <i class="fa-solid fa-boxes-stacked text-brand-orange"></i>
                                     الأرقام التسلسلية للكاشفين (18 رقماً لكل جهاز) وحالة الزيارة
                                 </h3>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
-                                        <label class="text-xs font-black text-brand-blue uppercase block"> N° série 1 </label>
-                                        <input type="text" id="reg-sn-1" oninput="validateSerialNumber(1)" maxlength="18" required placeholder="أدخل 18 رقماً للجهاز الأول" class="w-full bg-white border border-slate-300 text-slate-800 text-sm font-mono rounded-lg p-2.5 outline-none">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="p-3 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
+                                        <label class="text-[11px] sm:text-xs font-black text-brand-blue uppercase block">الرقم التسلسلي للجهاز الأول (N° série 1)</label>
+                                        <input type="text" id="reg-sn-1" oninput="validateSerialNumber(1)" maxlength="18" required placeholder="أدخل 18 رقماً للجهاز الأول" class="w-full bg-white border border-slate-300 text-slate-800 text-xs sm:text-sm font-mono rounded-lg p-2.5 outline-none">
                                         <span id="sn1-error-msg" class="text-[11px] text-red-500 font-bold hidden">يجب إدخال 18 رقماً بالضبط!</span>
                                     </div>
 
-                                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
-                                        <label class="text-xs font-black text-brand-blue uppercase block"> N° série 2 </label>
-                                        <input type="text" id="reg-sn-2" oninput="validateSerialNumber(2)" maxlength="18" required placeholder="أدخل 18 رقماً للجهاز الثاني" class="w-full bg-white border border-slate-300 text-slate-800 text-sm font-mono rounded-lg p-2.5 outline-none">
+                                    <div class="p-3 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
+                                        <label class="text-[11px] sm:text-xs font-black text-brand-blue uppercase block">الرقم التسلسلي للجهاز الثاني (N° série 2)</label>
+                                        <input type="text" id="reg-sn-2" oninput="validateSerialNumber(2)" maxlength="18" required placeholder="أدخل 18 رقماً للجهاز الثاني" class="w-full bg-white border border-slate-300 text-slate-800 text-xs sm:text-sm font-mono rounded-lg p-2.5 outline-none">
                                         <span id="sn2-error-msg" class="text-[11px] text-red-500 font-bold hidden">يجب إدخال 18 رقماً بالضبط!</span>
                                     </div>
                                 </div>
 
                                 <div class="p-4 rounded-xl border border-slate-200 bg-blue-50/30 space-y-2">
                                     <label class="text-xs font-bold text-slate-700 block">حالة التركيب المشتركة للجهازين <span class="text-red-500">*</span></label>
-                                    <select id="reg-status" required class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-lg p-2.5 font-bold outline-none">
-                                        <option value="تم التركيب"> Pose </option>
-                                        <option value="تم التركيب"> Dja Pose </option>
-                                        <option value="غائب">Absent </option>
-                                        <option value="رفض التركيب">Refus de Pose </option>
+                                    <select id="reg-status" required class="w-full bg-white border border-slate-300 text-slate-800 text-xs sm:text-sm rounded-lg p-2.5 font-bold outline-none">
+                                        <option value="تم التركيب">تم التركيب</option>
+                                        <option value="غائب">غائب</option>
+                                        <option value="رفض التركيب">رفض التركيب</option>
                                     </select>
                                 </div>
                             </div>
@@ -295,16 +307,16 @@
                             <!-- Notes -->
                             <div>
                                 <label class="text-xs font-semibold text-slate-700 block mb-1">ملاحظات / سبب الغياب أو الرفض</label>
-                                <textarea id="reg-notes" rows="2" placeholder="أكتب أي ملاحظات إضافية هنا..." class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-xl p-2.5 outline-none"></textarea>
+                                <textarea id="reg-notes" rows="2" placeholder="أكتب أي ملاحظات إضافية هنا..." class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm rounded-xl p-2.5 outline-none"></textarea>
                             </div>
 
                             <!-- Form Buttons -->
-                            <div class="flex items-center gap-3 pt-2">
-                                <button type="submit" id="btn-save-submit" class="flex-1 bg-brand-orange hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg text-sm flex items-center justify-center gap-2">
+                            <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                                <button type="submit" id="btn-save-submit" class="w-full sm:flex-1 bg-brand-orange hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2">
                                     <i class="fa-solid fa-floppy-disk"></i>
-                                    <span>حفظ العملية</span>
+                                    <span>حفظ سحابياً وتسجيل البيانات</span>
                                 </button>
-                                <button type="button" onclick="resetForm()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm">إلغاء</button>
+                                <button type="button" onclick="resetForm()" class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-4 rounded-xl text-xs sm:text-sm">إلغاء</button>
                             </div>
                         </form>
                     </div>
@@ -313,33 +325,33 @@
 
             <!-- TAB 2: Import Excel -->
             <section id="sec-import" class="hidden space-y-6">
-                <div class="max-w-3xl mx-auto glass-card p-8 rounded-2xl border text-center space-y-6">
+                <div class="max-w-3xl mx-auto glass-card p-6 sm:p-8 rounded-2xl border text-center space-y-6">
                     <div class="w-16 h-16 bg-blue-50 text-brand-blue rounded-2xl flex items-center justify-center mx-auto text-2xl">
                         <i class="fa-solid fa-file-excel"></i>
                     </div>
-                    <h2 class="text-xl font-bold text-slate-800">رفع واستيراد قائمة الزبائن للسحابة</h2>
-                    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-8 bg-slate-50 hover:bg-slate-100 relative cursor-pointer">
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800">رفع واستيراد قائمة الزبائن للسحابة</h2>
+                    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 sm:p-8 bg-slate-50 hover:bg-slate-100 relative cursor-pointer">
                         <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" onchange="handleExcelImport(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                         <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-400 mb-2"></i>
-                        <p class="text-sm font-bold text-slate-700">اضغط هنا أو اسحب ملف Excel لرفعه للسحابة</p>
+                        <p class="text-xs sm:text-sm font-bold text-slate-700">اضغط هنا أو اسحب ملف Excel لرفعه للسحابة</p>
                     </div>
-                    <div id="import-summary" class="hidden bg-emerald-50 text-emerald-800 p-4 rounded-xl border text-sm font-medium"></div>
+                    <div id="import-summary" class="hidden bg-emerald-50 text-emerald-800 p-4 rounded-xl border text-xs sm:text-sm font-medium"></div>
                 </div>
             </section>
 
             <!-- TAB 3: Saved Files & Archive Management -->
             <section id="sec-files" class="hidden space-y-6">
-                <div class="glass-card p-6 rounded-2xl border space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h2 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                <div class="glass-card p-4 sm:p-6 rounded-2xl border space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                        <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
                             <i class="fa-solid fa-folder-open text-brand-orange"></i>
-                            إدارة و متابعة  الملفات 
+                            إدارة وأرشيف الملفات المرفوعة والسحابية
                         </h2>
                         <span class="text-xs bg-blue-50 text-brand-blue border border-blue-200 font-bold px-3 py-1 rounded-full">تحديث فوري للسحابة</span>
                     </div>
 
-                    <div class="overflow-x-auto rounded-xl border">
-                        <table class="w-full text-right text-xs">
+                    <div class="table-responsive rounded-xl border">
+                        <table class="w-full text-right text-xs min-w-[650px]">
                             <thead class="bg-slate-100 font-bold border-b text-slate-700">
                                 <tr>
                                     <th class="p-3">اسم الملف</th>
@@ -357,13 +369,13 @@
 
             <!-- TAB 4: Duplicates View -->
             <section id="sec-duplicates" class="hidden space-y-6">
-                <div class="glass-card p-6 rounded-2xl border space-y-4">
-                    <h2 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                <div class="glass-card p-4 sm:p-6 rounded-2xl border space-y-4">
+                    <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
                         <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
                         تتبع العناصر المكررة
                     </h2>
-                    <div class="overflow-x-auto rounded-xl border">
-                        <table class="w-full text-right text-xs">
+                    <div class="table-responsive rounded-xl border">
+                        <table class="w-full text-right text-xs min-w-[900px]">
                             <thead class="bg-slate-100 font-bold border-b">
                                 <tr>
                                     <th class="p-3">Référence</th>
@@ -387,31 +399,31 @@
 
             <!-- TAB 5: Records Table & Export -->
             <section id="sec-records" class="hidden space-y-6">
-                <div class="glass-card p-6 rounded-2xl border space-y-4">
-                    <div class="flex flex-wrap justify-between items-center gap-4 border-b pb-4">
-                        <h2 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                <div class="glass-card p-4 sm:p-6 rounded-2xl border space-y-4">
+                    <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 border-b pb-4">
+                        <h2 class="font-bold text-slate-800 text-base sm:text-lg flex items-center gap-2">
                             <i class="fa-solid fa-table-list text-brand-blue"></i>
-                            Liste de Pose
+                            السجل الشامل السحابي (Liste de Pose)
                         </h2>
                         <!-- Search Box for Records -->
-                        <div class="relative flex-1 max-w-md min-w-[280px]">
+                        <div class="relative flex-1 max-w-full lg:max-w-md">
                             <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </span>
                             <input type="text" id="records-search-input" oninput="filterRecordsTable()" placeholder="ابحث بالمرجع، أرقام الهوية، السيريال، أو اسم الزبون / المستلم..." class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-xl py-2.5 pr-9 pl-3 outline-none focus:ring-2 focus:ring-brand-blue font-semibold">
                         </div>
-                        <div class="flex gap-2">
-                            <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-2">
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="exportToExcel()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-file-excel"></i> تصدير Excel
                             </button>
-                            <button onclick="exportToPDF()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-2">
+                            <button onclick="exportToPDF()" class="flex-1 sm:flex-none bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-file-pdf"></i> تصدير PDF
                             </button>
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto rounded-xl border">
-                        <table class="w-full text-right text-xs">
+                    <div class="table-responsive rounded-xl border">
+                        <table class="w-full text-right text-xs min-w-[1000px]">
                             <thead class="bg-slate-100 font-bold border-b">
                                 <tr>
                                     <th class="p-3">Référence</th>
@@ -440,7 +452,7 @@
         <div id="pdf-export-container" style="position: absolute; left: -9999px; top: -9999px; background: white; padding: 20px; width: 1122px; direction: ltr; font-family: 'Cairo', sans-serif;">
             <div style="text-align: center; margin-bottom: 20px;">
                 <h2 style="font-size: 20px; font-weight: bold; color: #003366;">SONELGAZ - LISTE DE POSE DES DÉTECTEURS DE CO</h2>
-                <p style="font-size: 11px; color: #666;">Agense Mosta Ouast  | Ets Bendahmen touati</p>
+                <p style="font-size: 11px; color: #666;">Document Généré السجلات الموثقة سحابياً | Ets BENSOULA DJILLALI</p>
             </div>
             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 10px;">
                 <thead>
@@ -480,7 +492,7 @@
                 <p id="delete-modal-msg" class="text-xs text-slate-500 mt-1">هل أنت متأكد من رغبتك في حذف هذا العنصر؟ لا يمكن التراجع عن هذه العملية.</p>
             </div>
             <div class="flex items-center gap-3 pt-2">
-                <button id="btn-confirm-delete" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md"> حـذف</button>
+                <button id="btn-confirm-delete" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md">نعم، حـذف</button>
                 <button onclick="closeModal('modal-delete')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs">إلغاء</button>
             </div>
         </div>
@@ -495,7 +507,7 @@
                 </div>
                 <div>
                     <h3 class="text-base font-bold text-slate-800">تعديل اسم الملف</h3>
-                    <p class="text-[11px] text-slate-500">قم بتغيير اسم الملف المحفوظ في الأرشيف </p>
+                    <p class="text-[11px] text-slate-500">قم بتغيير اسم الملف المحفوظ في الأرشيف السحابي</p>
                 </div>
             </div>
             <div>
@@ -831,9 +843,9 @@
             }
 
             const entry = {
-                fileKey: activeFileKey || 'general', // ربط السجل بالملف المفتوح حالياً
+                fileKey: activeFileKey || 'general',
                 timestamp: editingKey !== null ? registrations.find(r => r.firebaseKey === editingKey).timestamp : getFormattedDate(),
-                ets: document.getElementById('reg-ets').value || 'Ets Bendahmen touati',
+                ets: document.getElementById('reg-ets').value || 'Ets BENSOULA DJILLALI',
                 qualite: document.getElementById('reg-qualite').value,
                 receiver: document.getElementById('reg-receiver').value,
                 reference: document.getElementById('reg-reference').value,
@@ -918,7 +930,7 @@
 
         function resetForm() {
             document.getElementById('form-registration').reset();
-            document.getElementById('reg-ets').value = 'Ets Bendahmen touati';
+            document.getElementById('reg-ets').value = 'Ets BENSOULA DJILLALI';
             document.getElementById('reg-qualite').value = "L'abonné(e)";
             handleQualiteChange();
             editingKey = null;
@@ -935,7 +947,6 @@
             const sn2Counts = {};
             let duplicateItems = [];
 
-            // تصفية العناصر المكررة للملف النشط حالياً فقط
             const currentFileRegistrations = registrations.filter(r => r.fileKey === activeFileKey);
 
             currentFileRegistrations.forEach(r => {
@@ -1000,12 +1011,10 @@
             filterRecordsTable();
         }
 
-        // دالة التصفية الحصرية للملف النشط والبحث فيه
         function filterRecordsTable() {
             const query = document.getElementById('records-search-input').value.toLowerCase().trim();
             const tbody = document.getElementById('table-records-body');
 
-            // تصفية السجلات التابعة للملف المفتوح حالياً فقط
             const currentFileRegistrations = registrations.filter(r => r.fileKey === activeFileKey);
 
             const filtered = currentFileRegistrations.filter(r => {
@@ -1057,7 +1066,6 @@
             let installedCount = 0;
             const completedRefs = new Set();
 
-            // الإحصائيات تحسب فقط مسجلات الملف النشط حالياً
             const currentFileRegistrations = registrations.filter(r => r.fileKey === activeFileKey);
 
             currentFileRegistrations.forEach(r => {
@@ -1267,7 +1275,6 @@
             openModal('modal-delete');
         }
 
-        // Export to Excel (تصدير سجلات الملف النشط فقط)
         function exportToExcel() {
             const currentFileRegistrations = registrations.filter(r => r.fileKey === activeFileKey);
 
@@ -1301,7 +1308,6 @@
             showToast('تم تصدير ملف Excel بنجاح!');
         }
 
-        // Export to PDF (تصدير سجلات الملف النشط فقط)
         function exportToPDF() {
             const currentFileRegistrations = registrations.filter(r => r.fileKey === activeFileKey);
 
